@@ -20,18 +20,22 @@ export default function BottomTabNavigator() {
                 name="TabOne"
                 component={TabOneNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+                    tabBarIcon: TabBarIconWrapper,
                 }}
             />
             <BottomTab.Screen
                 name="TabTwo"
                 component={TabTwoNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+                    tabBarIcon: TabBarIconWrapper,
                 }}
             />
         </BottomTab.Navigator>
     )
+}
+
+function TabBarIconWrapper({ color }: { color: string; focused: boolean; size: number }) {
+    return <TabBarIcon name="ios-code" color={color} />
 }
 
 // You can explore the built-in icon families and icons on the web at:
