@@ -1,8 +1,18 @@
 {
     "cSpell.words": [
         "Ionicons",
+        "Pressable",
         "apos",
         "doesn",
         "t"
+    ],
+    "eslint.packageManager": "yarn",
+    "eslint.probe": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "html",
+        "markdown"
     ]
 }
