@@ -37,4 +37,12 @@ describe('useStorage', () => {
         expect(setValueSpy).toHaveBeenCalledTimes(1)
         expect(result.current[0]).toEqual(5)
     })
+
+    it('should accept a setter function', () => {
+        const { result } = setup({ initialValue: 500 })
+
+        result.current[1]((prev) => (prev ?? 0) + 100)
+
+        expect(result.current[0]).toEqual(600)
+    })
 })

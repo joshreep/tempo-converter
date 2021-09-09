@@ -37,6 +37,7 @@ const dummyEvent: GestureResponderEvent = {
 
 function setup({ dataSetSize }: SetupProps = {}) {
     const utils = renderHook(({ dataSetSize }) => useTapTempo(dataSetSize), { initialProps: { dataSetSize } })
+
     return { ...utils }
 }
 

@@ -4,6 +4,7 @@
         "Pressable",
         "apos",
         "doesn",
+        "lokijs",
         "t"
     ],
     "eslint.packageManager": "yarn",
@@ -14,5 +15,8 @@
         "typescriptreact",
         "html",
         "markdown"
-    ]
+    ],
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true
 }

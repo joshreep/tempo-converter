@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import useIsComponentMounted from './useIsComponentMounted'
 
-export default function useStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
+export default function useStorage<T>(key: string, initialValue: T) {
     const [storedValue, setStoredValue] = useState<T>(initialValue)
     const isComponentMounted = useIsComponentMounted()
 
@@ -26,5 +26,5 @@ export default function useStorage<T>(key: string, initialValue: T): [T, Dispatc
         AsyncStorage.setItem(key, JSON.stringify(valueToStore))
     }
 
-    return [storedValue, setValue]
+    return [storedValue, setValue] as const
 }

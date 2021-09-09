@@ -11,9 +11,9 @@ export default {
                             TabOneScreen: 'one',
                         },
                     },
-                    TabTwo: {
+                    Settings: {
                         screens: {
-                            TabTwoScreen: 'two',
+                            SettingsScreen: 'two',
                         },
                     },
                 },
