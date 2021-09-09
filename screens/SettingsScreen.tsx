@@ -7,7 +7,7 @@ import { SUBDIVISIONS } from '../constants/subdivisions'
 import { useSettings } from '../contexts/settings'
 
 const Container = styled(ScrollView)`
-    margin: 25px;
+    padding: 25px;
 `
 
 const Header = styled(Text)`
