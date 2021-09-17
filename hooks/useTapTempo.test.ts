@@ -48,7 +48,7 @@ describe('useTapTempo', () => {
         act(() => {
             result.current[1]({ ...dummyEvent, timeStamp: 100 })
         })
-        expect(result.current[0]).toBe(0)
+        expect(result.current[0]).toBe(1000)
 
         act(() => {
             result.current[1]({ ...dummyEvent, timeStamp: 110 })
@@ -71,13 +71,13 @@ describe('useTapTempo', () => {
         expect(result.current[0]).toBe(17.5)
     })
 
-    it('should return 0 when only tapped once', () => {
+    it('should return defaultValue when only tapped once', () => {
         const { result } = setup()
 
         act(() => {
             result.current[1]({ ...dummyEvent, timeStamp: 100 })
         })
 
-        expect(result.current[0]).toBe(0)
+        expect(result.current[0]).toBe(1000)
     })
 })

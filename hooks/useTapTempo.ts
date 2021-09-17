@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
 import { GestureResponderEvent } from 'react-native'
 
-export default function useTapTempo(dataSetSize = 5) {
+export default function useTapTempo(dataSetSize = 5, defaultValue = 1000) {
     const [, setTimeStamps] = useState<number[]>([])
-    const [milliseconds, setMilliseconds] = useState(1000)
+    const [milliseconds, setMilliseconds] = useState(defaultValue)
 
     const resetTimeStampsTimeout = useRef<NodeJS.Timeout>()
 
