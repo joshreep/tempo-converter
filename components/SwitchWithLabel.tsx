@@ -10,6 +10,7 @@ const SwitchContainer = styled(View)`
 
 const Label = styled(Text)`
     padding-left: 10px;
+    color: ${({ theme }) => theme.textColor};
 `
 
 type Props = SwitchProps & {

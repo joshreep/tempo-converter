@@ -14,7 +14,7 @@ const StyledButton = styled(Button)`
 `
 const ButtonText = styled(Text)<{ inverted: boolean }>`
     font-size: 24px;
-    color: ${({ theme, inverted }) => (inverted ? theme.primaryDark : theme.textColorDark)};
+    color: ${({ theme, inverted }) => (inverted ? theme.primaryText : theme.textColorDark)};
 `
 
 export type TapTempoButtonProps = ButtonProps

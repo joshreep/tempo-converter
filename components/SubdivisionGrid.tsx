@@ -12,7 +12,7 @@ const Row = styled(View)`
 const Col = styled(Text)<{ active: boolean }>`
     width: 50%;
     padding: 1px 5px;
-    color: ${({ active, theme }) => (active ? theme.primaryDark : theme.textColor)};
+    color: ${({ active, theme }) => (active ? theme.primaryText : theme.textColor)};
 `
 
 type Props = Pick<ReturnType<typeof useTapTempoSubDivision>, 'subdivisions'>

@@ -12,7 +12,7 @@ const Container = styled(View)`
 
 const Header = styled(Text)`
     font-size: 20px;
-    color: ${({ theme }) => theme.primaryDark};
+    color: ${({ theme }) => theme.primaryText};
     margin: 20px 0px 10px;
 `
 
