@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
-import { ScrollView, Text } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import styled, { ThemeContext } from 'styled-components'
 
 import SwitchWithLabel from '../components/SwitchWithLabel'
 import { SUBDIVISIONS } from '../constants/subdivisions'
 import { useSettings } from '../contexts/settings'
 
-const Container = styled(ScrollView)`
-    padding: 25px;
+const Container = styled(View)`
+    padding: 5px 25px 25px;
 `
 
 const Header = styled(Text)`
@@ -25,17 +25,19 @@ export default function SettingsScreen() {
     }
 
     return (
-        <Container>
-            <Header>Show Subdivisions</Header>
-            {Object.keys(SUBDIVISIONS).map((key) => (
-                <SwitchWithLabel
-                    key={key}
-                    label={key}
-                    onValueChange={(value) => updateSubdivisionSetting(key, value)}
-                    value={settings[key]}
-                    trackColor={{ true: theme.primary }}
-                />
-            ))}
-        </Container>
+        <ScrollView>
+            <Container>
+                <Header>Show Subdivisions</Header>
+                {Object.keys(SUBDIVISIONS).map((key) => (
+                    <SwitchWithLabel
+                        key={key}
+                        label={key}
+                        onValueChange={(value) => updateSubdivisionSetting(key, value)}
+                        value={settings[key]}
+                        trackColor={{ true: theme.primary }}
+                    />
+                ))}
+            </Container>
+        </ScrollView>
     )
 }
