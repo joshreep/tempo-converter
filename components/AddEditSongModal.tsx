@@ -21,7 +21,7 @@ type AddSongModalProps = {
     visible: boolean
 }
 
-const AddSongModal: FC<AddSongModalProps> = (props) => {
+const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     const { closeModal, visible } = props
 
     const [songTitle, setSongTitle] = useState('')
@@ -78,4 +78,4 @@ const AddSongModal: FC<AddSongModalProps> = (props) => {
     )
 }
 
-export default AddSongModal
+export default AddEditSongModal
