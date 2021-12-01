@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { GestureResponderEvent, KeyboardAvoidingView as _KeyboardAvoidingView, Platform, TextInput } from 'react-native'
+import { KeyboardAvoidingView as _KeyboardAvoidingView, Platform, TextInput } from 'react-native'
 
 import { Text, View, MaterialIcons } from '../components/Themed'
 import DismissKeyboard from '../components/DismissKeyboard'
@@ -8,7 +8,6 @@ import TapTempoButton from '../components/TapTempoButton'
 import SubdivisionGrid from '../components/SubdivisionGrid'
 import useTapTempoSubDivision from '../hooks/useTapTempoSubDivision'
 import Button from '../components/Button'
-import { usePlaylist } from '../contexts/playlist'
 import AddSongModal from '../components/AddSongModal'
 
 const KeyboardAvoidingView = styled(_KeyboardAvoidingView)`
@@ -53,7 +52,6 @@ const AddToSetListButton = styled(Button)`
 export default function TempoConverterScreen() {
     const { handleTap, bpm, setBpm, subdivisions } = useTapTempoSubDivision()
     const [addSongModalVisible, setAddSongModalVisible] = useState(false)
-    const { addSong } = usePlaylist('default')
 
     const handleBpmChange = (text: string) => {
         setBpm(+text)

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { FlatList, ListRenderItem, Pressable, TouchableOpacity } from 'react-native'
+import { FlatList, ListRenderItem, Pressable } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import styled from 'styled-components'
 
@@ -7,6 +7,7 @@ import { MaterialIcons, Text, View } from '../components/Themed'
 import { getMSValue } from '../hooks/useTapTempoSubDivision'
 import { usePlaylist, ISong } from '../contexts/playlist'
 import { BottomTabParamList } from '../types'
+import Button from '../components/Button'
 
 const Container = styled(View)`
     padding: 20px;
@@ -31,7 +32,26 @@ const CellText = styled(Text)`
     font-size: 16px;
 `
 
-const ListEmpty = styled(Text)``
+const ListEmptyContainer = styled(View)`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`
+
+const ListEmptyText = styled(Text)`
+    font-size: 24px;
+    text-align: center;
+    padding-bottom: 10px;
+`
+
+const ListEmptyButton = styled(Button)`
+    padding: 10px 20px;
+    border-radius: 100px;
+    flex-direction: row;
+    border: none;
+`
+
+const EDIT_IMPLEMENTED = false
 
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
     const { playlist, removeSong } = usePlaylist('default')
@@ -49,9 +69,11 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
                 <CellText>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
             </Col>
             <Col style={{ justifyContent: 'flex-end', flexShrink: 1 }}>
-                <Pressable>
-                    <MaterialIcons size={26} name="edit" />
-                </Pressable>
+                {EDIT_IMPLEMENTED && (
+                    <Pressable>
+                        <MaterialIcons size={26} name="edit" />
+                    </Pressable>
+                )}
                 <Pressable onPress={() => confirmRemove(item, index)}>
                     <MaterialIcons size={30} name="close" darkColor="#F00" lightColor="#F00" />
                 </Pressable>
@@ -59,14 +81,16 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
         </Row>
     )
 
-    const ListEmptyComponent = (
-        <ListEmpty>
-            There are currently no songs in the playlist.{' '}
-            <TouchableOpacity onPress={() => navigation.navigate('Tempo Converter')}>
-                <Text>Add one?</Text>
-            </TouchableOpacity>
-        </ListEmpty>
-    )
+    if (playlist.length === 0)
+        return (
+            <ListEmptyContainer>
+                <ListEmptyText>There are currently no songs in the playlist.</ListEmptyText>
+                <ListEmptyButton onPress={() => navigation.navigate('Tempo Converter')}>
+                    <MaterialIcons name="add" size={24} />
+                    <Text style={{ fontSize: 24 }}>Add one?</Text>
+                </ListEmptyButton>
+            </ListEmptyContainer>
+        )
 
     return (
         <Container>
@@ -76,7 +100,6 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
                 data={playlist}
                 renderItem={renderRow}
                 keyExtractor={(item, index) => item.title + index}
-                ListEmptyComponent={ListEmptyComponent}
             />
         </Container>
     )

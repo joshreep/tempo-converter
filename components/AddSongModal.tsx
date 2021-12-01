@@ -1,5 +1,5 @@
 import { Picker } from '@react-native-community/picker'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { SubdivisionName } from '../constants/subdivisions'
 import { usePlaylist } from '../contexts/playlist'
@@ -8,9 +8,9 @@ import Button from './Button'
 import ModalWrapper from './ModalWrapper'
 import { Text, TextInput, View } from './Themed'
 
-const SongNameInput = styled(TextInput)`
+const SongInput = styled(TextInput)`
     font-size: 24px;
-    /* margin-bottom: 12px; */
+    margin-bottom: 12px;
     min-width: 200px;
     text-align: center;
 `
@@ -38,11 +38,14 @@ type AddSongModalProps = {
 }
 
 const AddSongModal: FC<AddSongModalProps> = (props) => {
-    const { bpm, closeModal, visible } = props
-    const { addSong } = usePlaylist('default')
+    const { closeModal, visible } = props
+
     const [songTitle, setSongTitle] = useState('')
-    const enabledSubdivisions = useEnabledSubdivisions()
     const [subdivision, setSubdivision] = useState<SubdivisionName>('Quarter')
+    const [bpm, setBpm] = useState(props.bpm.toString())
+
+    const { addSong } = usePlaylist('default')
+    const enabledSubdivisions = useEnabledSubdivisions()
 
     const resetValuesAndCloseModal = () => {
         setSongTitle('')
@@ -55,13 +58,29 @@ const AddSongModal: FC<AddSongModalProps> = (props) => {
     }
 
     const handleAdd = () => {
-        addSong({ bpm, title: songTitle, subdivision })
+        addSong({ bpm: +bpm, title: songTitle, subdivision })
         resetValuesAndCloseModal()
     }
 
+    useEffect(() => {
+        setBpm(props.bpm.toString())
+    }, [props.bpm])
+
     return (
         <ModalWrapper animationType="slide" transparent visible={visible}>
-            <SongNameInput onChangeText={setSongTitle} value={songTitle} placeholder="Enter Song Title" />
+            <SongInput
+                onChangeText={setSongTitle}
+                value={songTitle}
+                placeholder="Enter Song Title"
+                autoCapitalize="words"
+            />
+            <SongInput
+                onChangeText={setBpm}
+                value={bpm}
+                placeholder="Enter BPM"
+                keyboardType="number-pad"
+                maxLength={3}
+            />
             <Picker
                 selectedValue={subdivision}
                 onValueChange={(itemValue) => setSubdivision(itemValue as SubdivisionName)}
