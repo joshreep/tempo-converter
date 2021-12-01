@@ -1,7 +1,9 @@
 export const TRIPLET_SUBDIVISION = 2 / 3
 export const DOTTED_SUBDIVISION = 3 / 4
 
-export const SUBDIVISIONS = Object.freeze({
+export type SubdivisionName = keyof typeof SUBDIVISIONS
+
+export const SUBDIVISIONS = {
     Whole: 1 * 4,
     'Dotted Whole': 1 * 4 * DOTTED_SUBDIVISION,
     'Triplet Whole': 1 * 4 * TRIPLET_SUBDIVISION,
@@ -17,9 +19,9 @@ export const SUBDIVISIONS = Object.freeze({
     Sixteenth: 1 / 4,
     'Dotted Sixteenth': (1 / 4) * DOTTED_SUBDIVISION,
     'Triplet Sixteenth': (1 / 4) * TRIPLET_SUBDIVISION,
-})
+}
 
-export const DEFAULT_SETTINGS = Object.freeze({
+export const DEFAULT_SETTINGS = {
     Whole: true,
     'Dotted Whole': false,
     'Triplet Whole': false,
@@ -35,4 +37,4 @@ export const DEFAULT_SETTINGS = Object.freeze({
     Sixteenth: true,
     'Dotted Sixteenth': false,
     'Triplet Sixteenth': false,
-})
+}

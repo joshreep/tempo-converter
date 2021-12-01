@@ -6,14 +6,19 @@ export default {
         screens: {
             Root: {
                 screens: {
-                    TabOne: {
+                    TempoConverter: {
                         screens: {
-                            TabOneScreen: 'one',
+                            TempoConverterScreen: 'tempoConverter',
+                        },
+                    },
+                    SetList: {
+                        screens: {
+                            SetListScreen: 'setList',
                         },
                     },
                     Settings: {
                         screens: {
-                            SettingsScreen: 'two',
+                            SettingsScreen: 'settings',
                         },
                     },
                 },

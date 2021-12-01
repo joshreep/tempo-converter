@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components'
+import { PlaylistProvider } from './contexts/playlist'
 import { SettingsProvider } from './contexts/settings'
 
 import useCachedResources from './hooks/useCachedResources'
@@ -19,10 +20,12 @@ export default function App() {
         return (
             <ThemeProvider theme={getThemeValues(colorScheme)}>
                 <SettingsProvider>
-                    <SafeAreaProvider>
-                        <Navigation colorScheme={colorScheme} />
-                        <StatusBar />
-                    </SafeAreaProvider>
+                    <PlaylistProvider>
+                        <SafeAreaProvider>
+                            <Navigation colorScheme={colorScheme} />
+                            <StatusBar />
+                        </SafeAreaProvider>
+                    </PlaylistProvider>
                 </SettingsProvider>
             </ThemeProvider>
         )

@@ -5,8 +5,9 @@ import * as React from 'react'
 import { ThemeContext } from 'styled-components'
 
 import TempoConverterScreen from '../screens/TempoConverterScreen'
+import SetListScreen from '../screens/SetListScreen'
 import SettingsScreen from '../screens/SettingsScreen'
-import { BottomTabParamList, TempoConverterParamList, SettingsParamList } from '../types'
+import { BottomTabParamList, TempoConverterParamList, SettingsParamList, SetListParamList } from '../types'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 
@@ -20,6 +21,13 @@ export default function BottomTabNavigator() {
                 component={TempoConverterNavigator}
                 options={{
                     tabBarIcon: MetronomeIconWrapper,
+                }}
+            />
+            <BottomTab.Screen
+                name="Set List"
+                component={SetListNavigator}
+                options={{
+                    tabBarIcon: SetListIconWrapper,
                 }}
             />
             <BottomTab.Screen
@@ -39,6 +47,10 @@ function MetronomeIconWrapper({ color }: { color: string; focused: boolean; size
     return <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} name="metronome" color={color} />
 }
 
+function SetListIconWrapper({ color }: { color: string; focused: boolean; size: number }) {
+    return <Ionicons size={30} style={{ marginBottom: -3 }} name="list" color={color} />
+}
+
 function SettingsIconWrapper({ color }: { color: string; focused: boolean; size: number }) {
     return <Ionicons size={30} style={{ marginBottom: -3 }} name="ios-cog-outline" color={color} />
 }
@@ -55,6 +67,15 @@ function TempoConverterNavigator() {
                 options={{ headerTitle: 'Tempo Converter' }}
             />
         </TempoConverterStack.Navigator>
+    )
+}
+
+const SetListStack = createStackNavigator<SetListParamList>()
+function SetListNavigator() {
+    return (
+        <SetListStack.Navigator>
+            <SetListStack.Screen name="SetListScreen" component={SetListScreen} options={{ headerTitle: 'Set List' }} />
+        </SetListStack.Navigator>
     )
 }
 
