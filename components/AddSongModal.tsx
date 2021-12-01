@@ -4,31 +4,15 @@ import styled from 'styled-components'
 import { SubdivisionName } from '../constants/subdivisions'
 import { usePlaylist } from '../contexts/playlist'
 import useEnabledSubdivisions from '../hooks/useEnabledSubdivisions'
-import Button from './Button'
 import ModalWrapper from './ModalWrapper'
-import { Text, TextInput, View } from './Themed'
+import { TextInput } from './Themed'
+import ActionButtons from './ActionButtons'
 
 const SongInput = styled(TextInput)`
     font-size: 24px;
     margin-bottom: 12px;
     min-width: 200px;
     text-align: center;
-`
-
-const ModalButton = styled(Button)`
-    border: none;
-    padding: 5px 10px;
-    margin: 0 5px;
-`
-
-const ModalButtonText = styled(Text)`
-    font-size: 20px;
-`
-
-const ModalButtonContainer = styled(View)`
-    flex-direction: row;
-    justify-content: center;
-    margin-bottom: -10px;
 `
 
 type AddSongModalProps = {
@@ -89,14 +73,7 @@ const AddSongModal: FC<AddSongModalProps> = (props) => {
                     <Picker.Item label={sub} value={sub} key={sub + index} />
                 ))}
             </Picker>
-            <ModalButtonContainer>
-                <ModalButton onPress={handleAdd}>
-                    <ModalButtonText>Add</ModalButtonText>
-                </ModalButton>
-                <ModalButton onPress={handleCancel}>
-                    <ModalButtonText>Cancel</ModalButtonText>
-                </ModalButton>
-            </ModalButtonContainer>
+            <ActionButtons actions={{ Add: handleAdd, Cancel: handleCancel }} />
         </ModalWrapper>
     )
 }

@@ -8,6 +8,7 @@ import { getMSValue } from '../hooks/useTapTempoSubDivision'
 import { usePlaylist, ISong } from '../contexts/playlist'
 import { BottomTabParamList } from '../types'
 import Button from '../components/Button'
+import { useConfirmation } from '../contexts/confirm'
 
 const Container = styled(View)`
     padding: 20px;
@@ -33,6 +34,7 @@ const CellText = styled(Text)`
 `
 
 const ListEmptyContainer = styled(View)`
+    padding: 20px;
     flex: 1;
     align-items: center;
     justify-content: center;
@@ -55,9 +57,10 @@ const EDIT_IMPLEMENTED = false
 
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
     const { playlist, removeSong } = usePlaylist('default')
+    const { openConfirmation } = useConfirmation()
 
     const confirmRemove = (song: ISong, index: number) => {
-        removeSong(index)
+        openConfirmation(`Are you sure you want to delete "${song.title}"?`, 'Yes', () => removeSong(index))
     }
 
     const renderRow: ListRenderItem<ISong> = ({ item, index }) => (
