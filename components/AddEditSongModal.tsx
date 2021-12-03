@@ -1,11 +1,10 @@
-import { Picker } from '@react-native-community/picker'
 import React, { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { SubdivisionName } from '../constants/subdivisions'
 import { usePlaylist } from '../contexts/playlist'
 import useEnabledSubdivisions from '../hooks/useEnabledSubdivisions'
 import ModalWrapper from './ModalWrapper'
-import { TextInput } from './Themed'
+import { Picker, TextInput, useThemeColor, View } from './Themed'
 import ActionButtons from './ActionButtons'
 
 const SongInput = styled(TextInput)`
@@ -13,6 +12,11 @@ const SongInput = styled(TextInput)`
     margin-bottom: 12px;
     min-width: 200px;
     text-align: center;
+`
+
+const Container = styled(View)`
+    flex: 1;
+    justify-content: center;
 `
 
 type AddSongModalProps = {
@@ -30,6 +34,8 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
 
     const { addSong } = usePlaylist('default')
     const enabledSubdivisions = useEnabledSubdivisions()
+
+    const textColor = useThemeColor({}, 'text')
 
     const resetValuesAndCloseModal = () => {
         setSongTitle('')
@@ -51,29 +57,31 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     }, [props.bpm])
 
     return (
-        <ModalWrapper animationType="slide" transparent visible={visible}>
-            <SongInput
-                onChangeText={setSongTitle}
-                value={songTitle}
-                placeholder="Enter Song Title"
-                autoCapitalize="words"
-            />
-            <SongInput
-                onChangeText={setBpm}
-                value={bpm}
-                placeholder="Enter BPM"
-                keyboardType="number-pad"
-                maxLength={3}
-            />
-            <Picker
-                selectedValue={subdivision}
-                onValueChange={(itemValue) => setSubdivision(itemValue as SubdivisionName)}
-            >
-                {Object.keys(enabledSubdivisions).map((sub, index) => (
-                    <Picker.Item label={sub} value={sub} key={sub + index} />
-                ))}
-            </Picker>
-            <ActionButtons actions={{ Add: handleAdd, Cancel: handleCancel }} />
+        <ModalWrapper animationType="slide" presentationStyle="formSheet" visible={visible}>
+            <Container>
+                <SongInput
+                    onChangeText={setSongTitle}
+                    value={songTitle}
+                    placeholder="Enter Song Title"
+                    autoCapitalize="words"
+                />
+                <SongInput
+                    onChangeText={setBpm}
+                    value={bpm}
+                    placeholder="Enter BPM"
+                    keyboardType="number-pad"
+                    maxLength={3}
+                />
+                <Picker
+                    selectedValue={subdivision}
+                    onValueChange={(itemValue) => setSubdivision(itemValue as SubdivisionName)}
+                >
+                    {Object.keys(enabledSubdivisions).map((sub, index) => (
+                        <Picker.Item label={sub} value={sub} color={textColor} key={sub + index} />
+                    ))}
+                </Picker>
+                <ActionButtons actions={{ Add: handleAdd, Cancel: handleCancel }} />
+            </Container>
         </ModalWrapper>
     )
 }
