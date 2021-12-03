@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Alert, FlatList, ListRenderItem, Pressable, TouchableOpacity } from 'react-native'
+import React, { FC, useState } from 'react'
+import { Alert, FlatList, ListRenderItem, Pressable } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import styled from 'styled-components'
 
@@ -8,6 +8,7 @@ import { getMSValue } from '../hooks/useTapTempoSubDivision'
 import { usePlaylist, ISong } from '../contexts/playlist'
 import { BottomTabParamList } from '../types'
 import Button from '../components/Button'
+import AddEditSongModal, { WriteMode } from '../components/AddEditSongModal'
 
 const Container = styled(View)`
     padding: 20px;
@@ -15,7 +16,7 @@ const Container = styled(View)`
     align-items: center;
 `
 
-const Row = styled(View)`
+const Row = styled(Pressable)`
     align-self: stretch;
     flex-direction: row;
     padding-bottom: 10px;
@@ -52,10 +53,12 @@ const ListEmptyButton = styled(Button)`
     border: none;
 `
 
-const EDIT_IMPLEMENTED = false
-
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
     const { playlist, removeSong } = usePlaylist('default')
+
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [activeSong, setActiveSong] = useState<ISong>()
+    const [activeIndex, setActiveIndex] = useState<number>()
 
     const confirmRemove = (song: ISong, index: number) => {
         Alert.alert(`Are you sure you want to delete "${song.title}"?`, 'This cannot be undone', [
@@ -64,8 +67,14 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
         ])
     }
 
+    const launchEditModal = (song: ISong, index: number) => {
+        setActiveSong(song)
+        setActiveIndex(index)
+        setShowEditModal(true)
+    }
+
     const renderRow: ListRenderItem<ISong> = ({ item, index }) => (
-        <Row>
+        <Row onPress={() => launchEditModal(item, index)}>
             <Col style={{ flexGrow: 2 }}>
                 <CellText>{item.title}</CellText>
             </Col>
@@ -73,12 +82,7 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
                 <CellText>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
             </Col>
             <Col style={{ justifyContent: 'flex-end', flexShrink: 1 }}>
-                {EDIT_IMPLEMENTED && (
-                    <Pressable>
-                        <MaterialIcons size={26} name="edit" />
-                    </Pressable>
-                )}
-                <Pressable onPress={() => confirmRemove(item, index)}>
+                <Pressable onPress={() => confirmRemove(item, index)} hitSlop={10}>
                     <MaterialIcons size={30} name="close" darkColor="#F00" lightColor="#F00" />
                 </Pressable>
             </Col>
@@ -104,6 +108,15 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
                 data={playlist}
                 renderItem={renderRow}
                 keyExtractor={(item, index) => item.title + index}
+            />
+            <AddEditSongModal
+                bpm={activeSong?.bpm}
+                closeModal={() => setShowEditModal(false)}
+                index={activeIndex}
+                mode={WriteMode.Edit}
+                songTitle={activeSong?.title}
+                subdivision={activeSong?.subdivision}
+                visible={showEditModal}
             />
         </Container>
     )

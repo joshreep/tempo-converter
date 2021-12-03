@@ -70,10 +70,11 @@ export const PlaylistProvider: FC = ({ children }) => {
 
     const editSong: IPlaylistContext['editSong'] = (playlistTitle, songIndex, partialSong) => {
         setPlaylist({
-            [playlistTitle]: playlist[playlistTitle].splice(songIndex, 1, {
-                ...playlist[playlistTitle][songIndex],
-                ...partialSong,
-            }),
+            [playlistTitle]: [
+                ...playlist[playlistTitle].slice(0, songIndex),
+                { ...playlist[playlistTitle][songIndex], ...partialSong },
+                ...playlist[playlistTitle].slice(songIndex + 1),
+            ],
         })
     }
 

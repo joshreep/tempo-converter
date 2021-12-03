@@ -8,7 +8,7 @@ import TapTempoButton from '../components/TapTempoButton'
 import SubdivisionGrid from '../components/SubdivisionGrid'
 import useTapTempoSubDivision from '../hooks/useTapTempoSubDivision'
 import Button from '../components/Button'
-import AddEditSongModal from '../components/AddEditSongModal'
+import AddEditSongModal, { WriteMode } from '../components/AddEditSongModal'
 
 const KeyboardAvoidingView = styled(_KeyboardAvoidingView)`
     flex: 1;
@@ -80,6 +80,7 @@ export default function TempoConverterScreen() {
                     <AddEditSongModal
                         bpm={bpm}
                         closeModal={() => setAddSongModalVisible(false)}
+                        mode={WriteMode.Add}
                         visible={addSongModalVisible}
                     />
                 </Container>

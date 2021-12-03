@@ -19,27 +19,37 @@ const Container = styled(View)`
     justify-content: center;
 `
 
+export enum WriteMode {
+    Add = 'add',
+    Edit = 'edit',
+}
+
 type AddSongModalProps = {
-    bpm: number
+    bpm?: number
     closeModal: () => void
+    index?: number
+    mode: WriteMode
+    songTitle?: string
+    subdivision?: SubdivisionName
     visible: boolean
 }
 
 const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     const { closeModal, visible } = props
 
-    const [songTitle, setSongTitle] = useState('')
-    const [subdivision, setSubdivision] = useState<SubdivisionName>('Quarter')
-    const [bpm, setBpm] = useState(props.bpm.toString())
+    const [songTitle, setSongTitle] = useState(props.songTitle ?? '')
+    const [subdivision, setSubdivision] = useState<SubdivisionName>(props.subdivision ?? 'Quarter')
+    const [bpm, setBpm] = useState(props.bpm?.toString() ?? '')
 
-    const { addSong } = usePlaylist('default')
+    const { addSong, editSong } = usePlaylist('default')
     const enabledSubdivisions = useEnabledSubdivisions()
 
     const textColor = useThemeColor({}, 'text')
 
     const resetValuesAndCloseModal = () => {
-        setSongTitle('')
-        setSubdivision('Quarter')
+        setSongTitle(props.songTitle ?? '')
+        setSubdivision(props.subdivision ?? 'Quarter')
+        setBpm(props.bpm?.toString() ?? '')
         closeModal()
     }
 
@@ -48,13 +58,29 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     }
 
     const handleAdd = () => {
-        addSong({ bpm: +bpm, title: songTitle, subdivision })
-        resetValuesAndCloseModal()
+        if (props.mode === WriteMode.Add) {
+            addSong({ bpm: +bpm, title: songTitle, subdivision })
+            resetValuesAndCloseModal()
+        }
+    }
+
+    const handleEdit = () => {
+        if (props.mode === WriteMode.Edit && props.index) {
+            editSong(props.index, { bpm: +bpm, title: songTitle, subdivision })
+            resetValuesAndCloseModal()
+        }
+    }
+
+    const actionButtonActions = {
+        [WriteMode.Add]: { Cancel: handleCancel, Add: handleAdd },
+        [WriteMode.Edit]: { Cancel: handleCancel, Save: handleEdit },
     }
 
     useEffect(() => {
-        setBpm(props.bpm.toString())
-    }, [props.bpm])
+        setBpm(props.bpm?.toString() ?? '')
+        setSongTitle(props.songTitle ?? '')
+        setSubdivision(props.subdivision ?? 'Quarter')
+    }, [props.bpm, props.songTitle, props.subdivision])
 
     return (
         <ModalWrapper animationType="slide" presentationStyle="formSheet" visible={visible}>
@@ -80,7 +106,7 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
                         <Picker.Item label={sub} value={sub} color={textColor} key={sub + index} />
                     ))}
                 </Picker>
-                <ActionButtons actions={{ Add: handleAdd, Cancel: handleCancel }} />
+                <ActionButtons actions={actionButtonActions[props.mode]} />
             </Container>
         </ModalWrapper>
     )
