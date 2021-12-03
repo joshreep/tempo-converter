@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { FlatList, ListRenderItem, Pressable } from 'react-native'
+import { Alert, FlatList, ListRenderItem, Pressable, TouchableOpacity } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import styled from 'styled-components'
 
@@ -8,7 +8,6 @@ import { getMSValue } from '../hooks/useTapTempoSubDivision'
 import { usePlaylist, ISong } from '../contexts/playlist'
 import { BottomTabParamList } from '../types'
 import Button from '../components/Button'
-import { useConfirmation } from '../contexts/confirm'
 
 const Container = styled(View)`
     padding: 20px;
@@ -57,10 +56,12 @@ const EDIT_IMPLEMENTED = false
 
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
     const { playlist, removeSong } = usePlaylist('default')
-    const { openConfirmation } = useConfirmation()
 
     const confirmRemove = (song: ISong, index: number) => {
-        openConfirmation(`Are you sure you want to delete "${song.title}"?`, 'Yes', () => removeSong(index))
+        Alert.alert(`Are you sure you want to delete "${song.title}"?`, 'This cannot be undone', [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Delete', style: 'destructive', onPress: () => removeSong(index) },
+        ])
     }
 
     const renderRow: ListRenderItem<ISong> = ({ item, index }) => (
