@@ -68,14 +68,14 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     }
 
     const handleEdit = () => {
-        if (props.mode === WriteMode.Edit && props.index) {
+        if (props.mode === WriteMode.Edit && props.index != null) {
             editSong(props.index, { bpm: +bpm, title: songTitle, subdivision })
             resetValuesAndCloseModal()
         }
     }
 
     const handleDelete = () => {
-        if (props.mode === WriteMode.Edit && props.index) {
+        if (props.mode === WriteMode.Edit && props.index != null) {
             Alert.alert(`Are you sure you want to delete "${songTitle}"?"`, 'This cannot be undone.', [
                 {
                     text: 'Cancel',
@@ -85,7 +85,7 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
                     text: 'Delete',
                     style: 'destructive',
                     onPress: () => {
-                        if (props.index) removeSong(props.index)
+                        if (props.index != null) removeSong(props.index)
                         resetValuesAndCloseModal()
                     },
                 },
