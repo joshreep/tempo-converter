@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
+import { Alert } from 'react-native'
 import styled from 'styled-components'
+
 import { SubdivisionName } from '../constants/subdivisions'
 import { usePlaylist } from '../contexts/playlist'
 import useEnabledSubdivisions from '../hooks/useEnabledSubdivisions'
@@ -15,8 +17,9 @@ const SongInput = styled(TextInput)`
 `
 
 const Container = styled(View)`
-    flex: 1;
+    width: 100%;
     justify-content: center;
+    align-content: stretch;
 `
 
 export enum WriteMode {
@@ -41,7 +44,7 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     const [subdivision, setSubdivision] = useState<SubdivisionName>(props.subdivision ?? 'Quarter')
     const [bpm, setBpm] = useState(props.bpm?.toString() ?? '')
 
-    const { addSong, editSong } = usePlaylist('default')
+    const { addSong, editSong, removeSong } = usePlaylist('default')
     const enabledSubdivisions = useEnabledSubdivisions()
 
     const textColor = useThemeColor({}, 'text')
@@ -71,9 +74,35 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
         }
     }
 
+    const handleDelete = () => {
+        if (props.mode === WriteMode.Edit && props.index) {
+            Alert.alert(`Are you sure you want to delete "${songTitle}"?"`, 'This cannot be undone.', [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        if (props.index) removeSong(props.index)
+                        resetValuesAndCloseModal()
+                    },
+                },
+            ])
+        }
+    }
+
     const actionButtonActions = {
-        [WriteMode.Add]: { Cancel: handleCancel, Add: handleAdd },
-        [WriteMode.Edit]: { Cancel: handleCancel, Save: handleEdit },
+        [WriteMode.Add]: [
+            { label: 'Cancel', action: handleCancel },
+            { label: 'Add', action: handleAdd },
+        ],
+        [WriteMode.Edit]: [
+            { label: 'Cancel', action: handleCancel },
+            { label: 'Delete', action: handleDelete, color: '#F00' },
+            { label: 'Save', action: handleEdit },
+        ],
     }
 
     useEffect(() => {
@@ -83,7 +112,7 @@ const AddEditSongModal: FC<AddSongModalProps> = (props) => {
     }, [props.bpm, props.songTitle, props.subdivision])
 
     return (
-        <ModalWrapper animationType="slide" presentationStyle="formSheet" visible={visible}>
+        <ModalWrapper animationType="fade" transparent visible={visible}>
             <Container>
                 <SongInput
                     onChangeText={setSongTitle}

@@ -1,10 +1,10 @@
 jest.mock('./useTapTempo')
 
-import useTapTempo from './useTapTempo'
+// import useTapTempo from './useTapTempo'
 
-function setup() {
-    useTapTempo.mockReturnValue(1000)
-}
+// function setup() {
+//     useTapTempo.mockReturnValue(1000)
+// }
 
 describe('useTapTempoSubDivision', () => {
     it.todo('should return a handleTap function')

@@ -1,5 +1,10 @@
 import React, { FC } from 'react'
-import { Text as DefaultText, View as DefaultView, TextInput as DefaultTextInput } from 'react-native'
+import {
+    Text as DefaultText,
+    View as DefaultView,
+    TextInput as DefaultTextInput,
+    KeyboardAvoidingView as DefaultKeyboardAvoidingView,
+} from 'react-native'
 import { Picker as DefaultPicker } from '@react-native-community/picker'
 import {
     PickerProps as DefaultPickerProps,
@@ -31,7 +36,8 @@ type ThemeProps = {
 }
 
 export type TextProps = ThemeProps & DefaultText['props']
-export type ViewProps = ThemeProps & DefaultView['props']
+export type ViewProps = ThemeProps & DefaultView['props'] & { opacity?: number }
+export type KeyboardAvoidingViewProps = ThemeProps & DefaultKeyboardAvoidingView['props'] & { opacity?: number }
 export type TextInputProps = ThemeProps & DefaultTextInput['props']
 export type PickerProps = ThemeProps & DefaultPickerProps
 export type PickerItemProps = ThemeProps & DefaultPickerItemProps
@@ -49,17 +55,33 @@ export function Text(props: TextProps) {
 }
 
 export function View(props: ViewProps) {
-    const { style, lightColor, darkColor, ...otherProps } = props
-    const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background')
+    const { style, lightColor, darkColor, opacity, ...otherProps } = props
+    let backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background')
+
+    if (opacity) {
+        backgroundColor += percentageToHex(opacity)
+    }
 
     return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />
+}
+
+export function KeyboardAvoidingView(props: KeyboardAvoidingViewProps) {
+    const { style, lightColor, darkColor, opacity, ...otherProps } = props
+    let backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background')
+
+    if (opacity) {
+        backgroundColor += percentageToHex(opacity)
+    }
+
+    return <DefaultKeyboardAvoidingView style={[{ backgroundColor }, style]} {...otherProps} />
 }
 
 export function TextInput(props: TextInputProps) {
     const { style, lightColor, darkColor, ...otherProps } = props
     const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text')
+    const placeholderColor = color + percentageToHex(25)
 
-    return <DefaultTextInput style={[{ color }, style]} {...otherProps} />
+    return <DefaultTextInput style={[{ color }, style]} placeholderTextColor={placeholderColor} {...otherProps} />
 }
 
 export const Picker: FC<PickerProps> & PickerComposition = (props) => {
@@ -83,4 +105,12 @@ export function MaterialIcons(props: IconProps) {
     const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text')
 
     return <DefaultMaterialIcons style={[{ color }, style]} {...otherProps} />
+}
+
+function percentageToHex(percentage: number) {
+    const clampedPercentage = Math.min(Math.max(percentage, 0), 100)
+    // const clampedNumber = Math.min(Math.max(percentage, 0), 255)
+    const numberValue = Math.round((clampedPercentage / 100) * 255)
+
+    return numberValue.toString(16)
 }

@@ -16,19 +16,21 @@ const ActionButtonText = styled(Text)`
 
 const ButtonContainer = styled(View)`
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     margin-bottom: -10px;
 `
 
-type YesNoButtonProps = {
-    actions: Record<string, (() => void) | undefined>
+type ActionButtonProps = {
+    actions: { label: string; action: () => void; color?: string }[]
 }
 
-const ActionButtons: FC<YesNoButtonProps> = (props) => (
+const ActionButtons: FC<ActionButtonProps> = (props) => (
     <ButtonContainer>
-        {Object.entries(props.actions).map(([actionText, action]) => (
-            <ActionButton key={actionText} onPress={action}>
-                <ActionButtonText>{actionText}</ActionButtonText>
+        {props.actions.map(({ label, action, color }) => (
+            <ActionButton key={label} onPress={action}>
+                <ActionButtonText darkColor={color} lightColor={color}>
+                    {label}
+                </ActionButtonText>
             </ActionButton>
         ))}
     </ButtonContainer>

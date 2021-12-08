@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Alert, FlatList, ListRenderItem, Pressable } from 'react-native'
+import { FlatList, ListRenderItem, Pressable } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import styled from 'styled-components'
 
@@ -19,7 +19,7 @@ const Container = styled(View)`
 const Row = styled(Pressable)`
     align-self: stretch;
     flex-direction: row;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 `
 
 const Col = styled(View)`
@@ -54,18 +54,11 @@ const ListEmptyButton = styled(Button)`
 `
 
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
-    const { playlist, removeSong } = usePlaylist('default')
+    const { playlist } = usePlaylist('default')
 
     const [showEditModal, setShowEditModal] = useState(false)
     const [activeSong, setActiveSong] = useState<ISong>()
     const [activeIndex, setActiveIndex] = useState<number>()
-
-    const confirmRemove = (song: ISong, index: number) => {
-        Alert.alert(`Are you sure you want to delete "${song.title}"?`, 'This cannot be undone', [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Delete', style: 'destructive', onPress: () => removeSong(index) },
-        ])
-    }
 
     const launchEditModal = (song: ISong, index: number) => {
         setActiveSong(song)
@@ -79,12 +72,10 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
                 <CellText>{item.title}</CellText>
             </Col>
             <Col>
-                <CellText>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
+                <CellText>{item.bpm} bpm</CellText>
             </Col>
-            <Col style={{ justifyContent: 'flex-end', flexShrink: 1 }}>
-                <Pressable onPress={() => confirmRemove(item, index)} hitSlop={10}>
-                    <MaterialIcons size={30} name="close" darkColor="#F00" lightColor="#F00" />
-                </Pressable>
+            <Col>
+                <CellText style={{ fontWeight: 'bold' }}>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
             </Col>
         </Row>
     )
