@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react'
-import { FlatList, ListRenderItem, Pressable } from 'react-native'
+import { Pressable } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import styled from 'styled-components'
+import DraggableFlatList, { RenderItem, ScaleDecorator } from 'react-native-draggable-flatlist'
 
 import { MaterialIcons, Text, View } from '../components/Themed'
 import { getMSValue } from '../hooks/useTapTempoSubDivision'
@@ -54,7 +55,7 @@ const ListEmptyButton = styled(Button)`
 `
 
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
-    const { playlist } = usePlaylist('default')
+    const { playlist, reorderSongs } = usePlaylist('default')
 
     const [showEditModal, setShowEditModal] = useState(false)
     const [activeSong, setActiveSong] = useState<ISong>()
@@ -66,18 +67,20 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
         setShowEditModal(true)
     }
 
-    const renderRow: ListRenderItem<ISong> = ({ item, index }) => (
-        <Row onPress={() => launchEditModal(item, index)}>
-            <Col style={{ flexGrow: 2 }}>
-                <CellText>{item.title}</CellText>
-            </Col>
-            <Col>
-                <CellText>{item.bpm} bpm</CellText>
-            </Col>
-            <Col>
-                <CellText style={{ fontWeight: 'bold' }}>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
-            </Col>
-        </Row>
+    const renderRow: RenderItem<ISong> = ({ item, index, drag, isActive }) => (
+        <ScaleDecorator>
+            <Row onPress={() => index != null && launchEditModal(item, index)} onLongPress={drag}>
+                <Col style={{ flexGrow: 2 }}>
+                    <CellText>{item.title}</CellText>
+                </Col>
+                <Col>
+                    <CellText>{item.bpm} bpm</CellText>
+                </Col>
+                <Col>
+                    <CellText style={{ fontWeight: 'bold' }}>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
+                </Col>
+            </Row>
+        </ScaleDecorator>
     )
 
     if (playlist.length === 0)
@@ -93,12 +96,13 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
 
     return (
         <Container>
-            <FlatList
-                style={{ width: '100%' }}
-                contentContainerStyle={{ flexGrow: 1 }}
+            <DraggableFlatList
+                containerStyle={{ width: '100%' }}
                 data={playlist}
+                keyExtractor={(item: ISong, index: number) => item.title + index}
+                onDragEnd={({ data }) => reorderSongs(data)}
                 renderItem={renderRow}
-                keyExtractor={(item, index) => item.title + index}
+                style={{ width: '100%' }}
             />
             <AddEditSongModal
                 bpm={activeSong?.bpm}
