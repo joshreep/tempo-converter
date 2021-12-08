@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react'
-import { Pressable } from 'react-native'
+import { Pressable, StyleSheet } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import styled from 'styled-components'
-import DraggableFlatList, { RenderItem, ScaleDecorator } from 'react-native-draggable-flatlist'
+import DraggableFlatList, { RenderItem, ScaleDecorator, ShadowDecorator } from 'react-native-draggable-flatlist'
 
 import { MaterialIcons, Text, View } from '../components/Themed'
 import { getMSValue } from '../hooks/useTapTempoSubDivision'
@@ -12,15 +12,18 @@ import Button from '../components/Button'
 import AddEditSongModal, { WriteMode } from '../components/AddEditSongModal'
 
 const Container = styled(View)`
-    padding: 20px;
     flex: 1;
     align-items: center;
 `
 
-const Row = styled(Pressable)`
+const Row = styled(View)`
     align-self: stretch;
     flex-direction: row;
-    padding-bottom: 20px;
+    padding: 10px 20px;
+`
+
+const PressableRow = styled(Pressable)`
+    width: 100%;
 `
 
 const Col = styled(View)`
@@ -30,8 +33,16 @@ const Col = styled(View)`
     flex-direction: row;
 `
 
+const GrowCol = styled(Col)`
+    flex-grow: 2;
+`
+
 const CellText = styled(Text)`
     font-size: 16px;
+`
+
+const BoldCellText = styled(CellText)`
+    font-weight: bold;
 `
 
 const ListEmptyContainer = styled(View)`
@@ -54,6 +65,10 @@ const ListEmptyButton = styled(Button)`
     border: none;
 `
 
+const ListEmptyButtonText = styled(Text)`
+    font-size: 24px;
+`
+
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
     const { playlist, reorderSongs } = usePlaylist('default')
 
@@ -67,19 +82,23 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
         setShowEditModal(true)
     }
 
-    const renderRow: RenderItem<ISong> = ({ item, index, drag, isActive }) => (
+    const renderRow: RenderItem<ISong> = ({ item, index, drag }) => (
         <ScaleDecorator>
-            <Row onPress={() => index != null && launchEditModal(item, index)} onLongPress={drag}>
-                <Col style={{ flexGrow: 2 }}>
-                    <CellText>{item.title}</CellText>
-                </Col>
-                <Col>
-                    <CellText>{item.bpm} bpm</CellText>
-                </Col>
-                <Col>
-                    <CellText style={{ fontWeight: 'bold' }}>{getMSValue(item.bpm, item.subdivision)} ms</CellText>
-                </Col>
-            </Row>
+            <ShadowDecorator>
+                <PressableRow onPress={() => index != null && launchEditModal(item, index)} onLongPress={drag}>
+                    <Row>
+                        <GrowCol>
+                            <CellText>{item.title}</CellText>
+                        </GrowCol>
+                        <Col>
+                            <CellText>{item.bpm} bpm</CellText>
+                        </Col>
+                        <Col>
+                            <BoldCellText>{getMSValue(item.bpm, item.subdivision)} ms</BoldCellText>
+                        </Col>
+                    </Row>
+                </PressableRow>
+            </ShadowDecorator>
         </ScaleDecorator>
     )
 
@@ -89,7 +108,7 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
                 <ListEmptyText>There are currently no songs in the playlist.</ListEmptyText>
                 <ListEmptyButton onPress={() => navigation.navigate('Tempo Converter')}>
                     <MaterialIcons name="add" size={24} />
-                    <Text style={{ fontSize: 24 }}>Add one?</Text>
+                    <ListEmptyButtonText>Add one?</ListEmptyButtonText>
                 </ListEmptyButton>
             </ListEmptyContainer>
         )
@@ -97,12 +116,11 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
     return (
         <Container>
             <DraggableFlatList
-                containerStyle={{ width: '100%' }}
+                containerStyle={styles.ListContainer}
                 data={playlist}
                 keyExtractor={(item: ISong, index: number) => item.title + index}
                 onDragEnd={({ data }) => reorderSongs(data)}
                 renderItem={renderRow}
-                style={{ width: '100%' }}
             />
             <AddEditSongModal
                 bpm={activeSong?.bpm}
@@ -118,3 +136,11 @@ const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ n
 }
 
 export default SetListScreen
+
+const styles = StyleSheet.create({
+    ListContainer: {
+        width: '100%',
+        height: '100%',
+        margin: 20,
+    },
+})
