@@ -10,6 +10,7 @@ npm-debug.*
 web-build/
 coverage
 .eslintcache
+dist
 
 # macOS
 .DS_Store
