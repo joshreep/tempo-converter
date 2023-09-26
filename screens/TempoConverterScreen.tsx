@@ -44,7 +44,7 @@ const AddToSetListButton = styled(Button)`
     border-radius: 1000px;
     /* padding: 5px; */
     font-size: 24px;
-    border: none;
+    border-width: 0px;
     color: ${({ theme }) => theme.primary};
     /* background-color: ${({ theme }) => theme.primary}; */
 `

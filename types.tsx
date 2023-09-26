@@ -20,3 +20,7 @@ export type SetListParamList = {
 export type SettingsParamList = {
     SettingsScreen: undefined
 }
+
+export type FastOmit<T extends object, U extends string | number | symbol> = {
+    [K in keyof T as K extends U ? never : K]: T[K]
+}

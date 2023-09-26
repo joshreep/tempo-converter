@@ -1,4 +1,4 @@
-import React, { createContext, FC, useContext } from 'react'
+import React, { createContext, FC, PropsWithChildren, useContext } from 'react'
 import { SubdivisionName } from '../constants/subdivisions'
 import useAsyncStorage from '../hooks/useAsyncStorage'
 
@@ -50,7 +50,7 @@ export function usePlaylist(playlistTitle?: string): unknown {
     }
 }
 
-export const PlaylistProvider: FC = ({ children }) => {
+export const PlaylistProvider: FC<PropsWithChildren> = ({ children }) => {
     const [playlist, setPlaylist] = useAsyncStorage<IPlaylistContext['playlist']>('playlist', DEFAULT_CONTEXT.playlist)
 
     const addSong: IPlaylistContext['addSong'] = (playlistTitle, songToAdd) => {

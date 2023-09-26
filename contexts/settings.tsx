@@ -1,4 +1,4 @@
-import React, { createContext, FC, useContext } from 'react'
+import React, { createContext, FC, PropsWithChildren, useContext } from 'react'
 
 import { DEFAULT_SETTINGS } from '../constants/subdivisions'
 import useAsyncStorage from '../hooks/useAsyncStorage'
@@ -14,7 +14,7 @@ export function useSettings() {
     return useContext(SettingsContext)
 }
 
-export const SettingsProvider: FC = ({ children }) => {
+export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
     const [settings, setSettings] = useAsyncStorage<{ [key: string]: boolean }>('settings', DEFAULT_SETTINGS)
 
     return <SettingsContext.Provider value={{ settings, setSettings }}>{children}</SettingsContext.Provider>

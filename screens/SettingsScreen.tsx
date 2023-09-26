@@ -34,7 +34,7 @@ export default function SettingsScreen() {
                         label={key}
                         onValueChange={(value) => updateSubdivisionSetting(key, value)}
                         value={settings[key]}
-                        trackColor={{ true: theme.primary }}
+                        trackColor={{ true: theme?.primary }}
                     />
                 ))}
             </Container>

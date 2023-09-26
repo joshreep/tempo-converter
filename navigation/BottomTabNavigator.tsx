@@ -15,7 +15,7 @@ export default function BottomTabNavigator() {
     const theme = React.useContext(ThemeContext)
 
     return (
-        <BottomTab.Navigator initialRouteName="Tempo Converter" tabBarOptions={{ activeTintColor: theme.primary }}>
+        <BottomTab.Navigator initialRouteName="Tempo Converter" tabBarOptions={{ activeTintColor: theme?.primary }}>
             <BottomTab.Screen
                 name="Tempo Converter"
                 component={TempoConverterNavigator}

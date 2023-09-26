@@ -50,7 +50,7 @@ const ListEmptyButton = styled(Button)`
     padding: 10px 20px;
     border-radius: 100px;
     flex-direction: row;
-    border: none;
+    border-width: 0px;
 `
 
 const SetListScreen: FC<StackScreenProps<BottomTabParamList, 'Set List'>> = ({ navigation }) => {
