@@ -1,50 +1,46 @@
 {
-  "expo": {
-    "name": "Tempo Converter",
-    "slug": "tempo-converter",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/b7b77200-3013-44d3-816b-f35d2bb04af9"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.joshreep.tempo-converter"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.joshreep.tempoconverter"
-    },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
-    },
-    "description": "Convert BPM to Milliseconds",
-    "extra": {
-      "eas": {
-        "projectId": "b7b77200-3013-44d3-816b-f35d2bb04af9"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "plugins": [
-      "expo-font",
-      "expo-asset"
-    ]
-  }
+    "expo": {
+        "name": "Tempo Converter",
+        "slug": "tempo-converter",
+        "newArchEnabled": true,
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/images/icon.png",
+        "scheme": "myapp",
+        "userInterfaceStyle": "automatic",
+        "splash": {
+            "image": "./assets/images/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0,
+            "url": "https://u.expo.dev/b7b77200-3013-44d3-816b-f35d2bb04af9"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.joshreep.tempo-converter"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/adaptive-icon.png",
+                "backgroundColor": "#FFFFFF"
+            },
+            "package": "com.joshreep.tempoconverter"
+        },
+        "web": {
+            "favicon": "./assets/images/favicon.png"
+        },
+        "description": "Convert BPM to Milliseconds",
+        "extra": {
+            "eas": {
+                "projectId": "b7b77200-3013-44d3-816b-f35d2bb04af9"
+            }
+        },
+        "runtimeVersion": {
+            "policy": "appVersion"
+        },
+        "plugins": ["expo-font", "expo-asset"]
+    }
 }

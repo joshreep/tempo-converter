@@ -52,7 +52,7 @@ function SetListIconWrapper({ color }: { color: string; focused: boolean; size: 
 }
 
 function SettingsIconWrapper({ color }: { color: string; focused: boolean; size: number }) {
-    return <Ionicons size={30} style={{ marginBottom: -3 }} name="ios-cog-outline" color={color} />
+    return <Ionicons size={30} style={{ marginBottom: -3 }} name="cog" color={color} />
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
